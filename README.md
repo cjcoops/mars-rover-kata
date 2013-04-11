@@ -15,8 +15,8 @@ mars-rover-kata
 
 
 ## Installation
-    git clone sdfdf
-    cd sds
+    git clone https://github.com/mattes/mars-rover-kata.git
+    cd mars-rover-kata
     npm install
     
 ## Usage
