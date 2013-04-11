@@ -27,6 +27,7 @@ Rover.prototype.addPosition = function(position) {
   return true;
 }
 
+
 // move rover
 Rover.prototype.move = function(commandString) {
   if(!_.isString(commandString)) throw new Error('invalid command string');

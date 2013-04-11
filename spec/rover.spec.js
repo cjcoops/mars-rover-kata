@@ -39,5 +39,22 @@ describe('Rover', function(){
     expect(position.direction).toEqual('north');
   });
 
+  it('should turn left', function(){
+    var rover = new Rover();
+    rover.move('l'); // turn left
+    var position = rover.getPosition();
+    expect(position.x).toEqual(0);
+    expect(position.y).toEqual(0);
+    expect(position.direction).toEqual('west');
+  });
+
+  it('should turn right', function(){
+    var rover = new Rover();
+    rover.move('r'); // turn right
+    var position = rover.getPosition();
+    expect(position.x).toEqual(0);
+    expect(position.y).toEqual(0);
+    expect(position.direction).toEqual('east');
+  });
 
 })
