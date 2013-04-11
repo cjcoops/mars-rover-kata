@@ -3,12 +3,13 @@ var Obstacle = require('./Obstacle.js');
 var _ = require('underscore');
 
 function Map(width, height) {
- this.width = undefined;
- this.height = undefined;
- this.obstacles = [];
+  this.width = undefined;
+  this.height = undefined;
+  this.obstacles = [];
 
- this.setWidth(width);
- this.setHeight(height);
+  // it spans a coordinate system in positive and negative direction
+  this.setWidth(width); 
+  this.setHeight(height);
 }
 
 Map.prototype.setWidth = function(width) {
