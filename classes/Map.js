@@ -7,8 +7,8 @@ function Map(width, height) {
  this.height = undefined;
  this.obstacles = [];
 
- this.setWidth(width);
- this.setHeight(height);
+ this.setWidth(width); // zero coordinate is then width/2
+ this.setHeight(height); // zero coordinate is then height/2
 }
 
 Map.prototype.setWidth = function(width) {
@@ -25,10 +25,10 @@ Map.prototype.addObstacle = function(obstacle) {
   if(!this.width || !this.height) throw new Error('init map with width and height first');
   if(!obstacle instanceof Obstacle) throw new Error('invalid obstacle');
 
-  if(obstacle.x > this.width || obstacle.x < 0)
+  if(obstacle.x > this.width/2 || obstacle.x < this.width/2*-1)
     throw new Error('x coordinate is not within map boundaries 0..' + this.width);
 
-  if(obstacle.y > this.height || obstacle.y < 0)
+  if(obstacle.y > this.height/2 || obstacle.y < this.height/2*-1)
     throw new Error('y coordinate is not within map boundaries 0..' + this.height);
 
   this.obstacles.push(obstacle);
