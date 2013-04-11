@@ -21,7 +21,8 @@ Rover.prototype.getPosition = function(index) {
   return this.pathStack[this.pathStack.length - index - 1];
 }
 
-Rover.prototype.move = function() {
+// move rover
+Rover.prototype.move = function(commandString) {
   return true;
 }
 

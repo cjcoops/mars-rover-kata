@@ -21,4 +21,23 @@ describe('Rover', function(){
     expect(startPosition.direction).toEqual('south');
   });
 
+  it('should move forward', function(){
+    var rover = new Rover();
+    rover.move('f'); // move forward
+    var position = rover.getPosition();
+    expect(position.x).toEqual(0);
+    expect(position.y).toEqual(1);
+    expect(position.direction).toEqual('north');
+  });
+
+  it('should move backward', function(){
+    var rover = new Rover();
+    rover.move('b'); // move backward
+    var position = rover.getPosition();
+    expect(position.x).toEqual(0);
+    expect(position.y).toEqual(-1);
+    expect(position.direction).toEqual('north');
+  });
+
+
 })
