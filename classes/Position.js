@@ -8,9 +8,27 @@ function Position(x, y, direction) {
   if(!direction || !~DIRECTIONS.indexOf(direction)) 
     throw new Error('missing or invalid direction (' + DIRECTIONS.join('|') + ')');
 
+  this.setX(x);
+  this.setY(y);
+  this.setDirection(direction);
+}
+
+Position.prototype.setX = function(x) {
   this.x = x;
+}
+
+Position.prototype.setY = function(y) {
   this.y = y;
+}
+
+Position.prototype.setDirection = function(direction) {
   this.direction = direction;
+
+  if(~['north', 'south'].indexOf(direction)) {
+    this.axis = 'y';
+  } else if(~['west', 'east'].indexOf(direction)) {
+    this.axis = 'x';
+  }
 }
 
 module.exports = Position;
