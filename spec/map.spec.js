@@ -14,11 +14,11 @@ describe('Map', function(){
   it('obstacle is within map boundaries', function(){
     var map = new Map(10, 10);
     expect(function(){
-      map.addObstacle(new Obstacle(20, 1));
+      map.addObstacle(new Obstacle(11, 1));
     }).toThrow();
 
     expect(function(){
-      map.addObstacle(new Obstacle(1, 20));
+      map.addObstacle(new Obstacle(1, 11));
     }).toThrow(); 
   });
 

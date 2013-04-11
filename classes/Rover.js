@@ -8,7 +8,7 @@ var DIRECTIONS = require('./Directions.js');
 function Rover(options) {
   var defaults = {
     start: new Position(0, 0, 'north'), // default position
-    map: undefined
+    map: undefined // map with boundaries and obstacles
   };
 
   if(!options) options = {};
@@ -58,9 +58,8 @@ Rover.prototype.move = function(commandString) {
   }
 }
 
-
-
-// move rover forward and save new position (consider direction)
+// move rover forward and save new position 
+// consider direction, map boundaries and map obstacles
 Rover.prototype.moveForward = function() {
   var position = this.getPosition();
   switch(position.direction) {
@@ -69,10 +68,18 @@ Rover.prototype.moveForward = function() {
     case 'west': position.addX(-1); break;
     case 'east': position.addX(1); break;
   }
-  this.addPosition(position); 
+
+  // if map is present ...
+  if(this.map) {    
+    this._mapWrapper(position, this.map); // moves within map boundaries only
+    this.addPosition(position); 
+  } else {
+    this.addPosition(position); 
+  }
 }
 
-// move rover backward and save new position (consider direction)
+// move rover backward and save new position
+// consider direction, map boundaries and map obstacles
 Rover.prototype.moveBackward = function() {
   var position = this.getPosition();
   switch(position.direction) {
@@ -81,7 +88,15 @@ Rover.prototype.moveBackward = function() {
     case 'west': position.addX(1); break;
     case 'east': position.addX(-1); break;
   }
-  this.addPosition(position); 
+
+  // if map is present ...
+  if(this.map) {
+    this._mapWrapper(position, this.map); // moves within map boundaries only
+    this.addPosition(position); 
+  } else {
+    this.addPosition(position); 
+  }
+
 }
 
 // turn rover left and save new position
@@ -98,5 +113,17 @@ Rover.prototype.turnRight = function() {
   this.addPosition(position); 
 }
 
+// make sure rover stays within boundaries of map
+Rover.prototype._mapWrapper = function(position, map) {
+  if(position.x > map.width) {
+    position.setX(-map.width);
+  } else if(position.x < -map.width) {
+    position.setX(map.width);
+  } else if(position.y > map.height) {
+    position.setY(-map.height);
+  } else if(position.y < -map.height) {
+    position.setY(map.height);
+  }
+}
 
 module.exports = Rover;
