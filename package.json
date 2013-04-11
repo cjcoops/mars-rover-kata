@@ -1,0 +1,14 @@
+{
+  "name": "mars-rover-kata",
+  "description": "Mars Rover Kata with Node.js",
+  "version": "0.0.1",
+  "private": true,
+
+  "dependencies": {
+  },
+
+  "devDependencies": {
+    "jasmin-node": "1.5.0"
+  }
+
+}
