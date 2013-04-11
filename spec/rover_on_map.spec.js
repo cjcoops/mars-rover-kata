@@ -78,7 +78,7 @@ describe('Rover on Map', function(){
 
   });
 
-  describe('colides with obstacles', function(){
+  describe('collides with obstacles', function(){
     var map = new Map(2, 2);
     map.addObstacle(new Obstacle(0, 0));
 
