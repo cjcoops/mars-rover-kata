@@ -7,7 +7,7 @@ var DIRECTIONS = require('./Directions.js');
 
 function Rover(options) {
   var defaults = {
-    start: new Position(0, 0, 'north'), // default position
+    start: new Position(0, 0, 'north'), // default position // @todo within map boundaries?
     map: undefined // map with boundaries and obstacles
   };
 
@@ -50,18 +50,23 @@ Rover.prototype.move = function(commandString) {
   // iterate over every single command
   for(var i=0; i < commands.length; i++) {
     switch(commands[i]) {
-      case 'f': this.moveForward(); break;
-      case 'b': this.moveBackward(); break;
+      case 'f': 
+        if(!this.moveForward()) return false;
+        break;
+      case 'b': 
+        if(!this.moveBackward()) return false;
+        break;
       case 'l': this.turnLeft(); break;
       case 'r': this.turnRight(); break;
     }
   }
+  return true;
 }
 
 // move rover forward and save new position 
 // consider direction, map boundaries and map obstacles
 Rover.prototype.moveForward = function() {
-  var position = this.getPosition();
+  var position = this.getPosition().clone();
   switch(position.direction) {
     case 'north': position.addY(1); break;
     case 'south': position.addY(-1); break;
@@ -72,16 +77,17 @@ Rover.prototype.moveForward = function() {
   // if map is present ...
   if(this.map) {    
     this._mapWrapper(position, this.map); // moves within map boundaries only
-    this.addPosition(position); 
-  } else {
-    this.addPosition(position); 
+    if(this._mapCollideWithObstacle(position, this.map)) return false; // obstacle collision?
   }
+  this.addPosition(position); 
+  return true;
 }
 
 // move rover backward and save new position
 // consider direction, map boundaries and map obstacles
 Rover.prototype.moveBackward = function() {
-  var position = this.getPosition();
+  var position = this.getPosition().clone();
+  position = new Position(position.x, position.y, position.direction);
   switch(position.direction) {
     case 'north': position.addY(-1); break;
     case 'south': position.addY(1); break;
@@ -92,10 +98,10 @@ Rover.prototype.moveBackward = function() {
   // if map is present ...
   if(this.map) {
     this._mapWrapper(position, this.map); // moves within map boundaries only
-    this.addPosition(position); 
-  } else {
-    this.addPosition(position); 
+    if(this._mapCollideWithObstacle(position, this.map)) return false; // obstacle collision?
   }
+  this.addPosition(position); 
+  return true;
 
 }
 
@@ -124,6 +130,16 @@ Rover.prototype._mapWrapper = function(position, map) {
   } else if(position.y < -map.height) {
     position.setY(map.height);
   }
+}
+
+Rover.prototype._mapCollideWithObstacle = function(position, map) {
+  for(var i=0; i < map.obstacles.length; i++) {
+    var obstacle = map.obstacles[i];
+    if(position.x == obstacle.x && position.y == obstacle.y) {
+      return true;
+    }
+  }
+  return false;
 }
 
 module.exports = Rover;

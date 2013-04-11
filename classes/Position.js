@@ -12,6 +12,10 @@ function Position(x, y, direction) {
   this.setDirection(direction);
 }
 
+Position.prototype.clone = function() {
+  return new Position(this.x, this.y, this.direction);
+}
+
 Position.prototype.setX = function(x) {
   if(!_.isNumber(x)) throw new Error('invalid x coordinate');
   this.x = x;
