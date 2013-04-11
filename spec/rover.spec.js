@@ -6,7 +6,7 @@ var Position = require('../classes/Position.js');
 describe('Rover', function(){
 
   describe('starting position', function(){
-    it('should start at position 0,0 facing north (per default)', function(){
+    it('should start at (x,y|0,0) facing north (per default)', function(){
       var rover = new Rover();
       var startPosition = rover.getPosition();
       expect(startPosition.x).toEqual(0);
@@ -14,7 +14,7 @@ describe('Rover', function(){
       expect(startPosition.direction).toEqual('north');
     });
 
-    it('should start at position 1,2 facing south (per argument)', function(){
+    it('should start at (x,y|1,2) facing south (per argument)', function(){
       var rover = new Rover({start: new Position(1, 2, 'south')});
       var startPosition = rover.getPosition();
       expect(startPosition.x).toEqual(1);
@@ -24,8 +24,8 @@ describe('Rover', function(){
 
   });
 
-  describe('turning', function(){
-    it('should turn left', function(){
+  describe('should turn', function(){
+    it('left', function(){
       var rover = new Rover();
       rover.move('l'); // turn left
       var position = rover.getPosition();
@@ -34,7 +34,7 @@ describe('Rover', function(){
       expect(position.direction).toEqual('west');
     });
 
-    it('should turn right', function(){
+    it('right', function(){
       var rover = new Rover();
       rover.move('r'); // turn right
       var position = rover.getPosition();
@@ -45,18 +45,18 @@ describe('Rover', function(){
   });
 
 
-  describe('moving forward/backward on x/y-axis', function(){
+  describe('moves 1 tick', function(){
 
-    it('should move forward (facing north, on y-axis)', function(){
-      var rover = new Rover(new Position(0, 0, 'north'));
+    it('forward (facing north, on y-axis)', function(){
+      var rover = new Rover({start: new Position(0, 0, 'north')});
       rover.move('f'); // move forward
       var position = rover.getPosition();
       expect(position.x).toEqual(0);
       expect(position.y).toEqual(1);
       expect(position.direction).toEqual('north');
     });
-    it('should move backward (facing north, on y-axis)', function(){
-      var rover = new Rover(new Position(0, 0, 'north'));
+    it('backward (facing north, on y-axis)', function(){
+      var rover = new Rover({start: new Position(0, 0, 'north')});
       rover.move('b'); // move backward
       var position = rover.getPosition();
       expect(position.x).toEqual(0);
@@ -64,16 +64,16 @@ describe('Rover', function(){
       expect(position.direction).toEqual('north');
     });
 
-    it('should move forward (facing south, on y-axis)', function(){
-      var rover = new Rover(new Position(0, 0, 'south'));
+    it('forward (facing south, on y-axis)', function(){
+      var rover = new Rover({start: new Position(0, 0, 'south')});
       rover.move('f'); // move forward
       var position = rover.getPosition();
       expect(position.x).toEqual(0);
       expect(position.y).toEqual(-1);
       expect(position.direction).toEqual('south');
     });
-    it('should move backward (facing south, on y-axis)', function(){
-      var rover = new Rover(new Position(0, 0, 'south'));
+    it('backward (facing south, on y-axis)', function(){
+      var rover = new Rover({start: new Position(0, 0, 'south')});
       rover.move('b'); // move backward
       var position = rover.getPosition();
       expect(position.x).toEqual(0);
@@ -82,16 +82,16 @@ describe('Rover', function(){
     });
 
 
-    it('should move forward (facing east, on x-axis)', function(){
-      var rover = new Rover(new Position(0, 0, 'east'));
+    it('forward (facing east, on x-axis)', function(){
+      var rover = new Rover({start: new Position(0, 0, 'east')});
       rover.move('f'); // move forward
       var position = rover.getPosition();
       expect(position.x).toEqual(1);
       expect(position.y).toEqual(0);
       expect(position.direction).toEqual('east');
     });
-    it('should move backward (facing east, on x-axis)', function(){
-      var rover = new Rover(new Position(0, 0, 'east'));
+    it('backward (facing east, on x-axis)', function(){
+      var rover = new Rover({start: new Position(0, 0, 'east')});
       rover.move('b'); // move backward
       var position = rover.getPosition();
       expect(position.x).toEqual(-1);
@@ -99,16 +99,16 @@ describe('Rover', function(){
       expect(position.direction).toEqual('east');
     });
 
-    it('should move forward (facing west, on x-axis)', function(){
-      var rover = new Rover(new Position(0, 0, 'west'));
+    it('forward (facing west, on x-axis)', function(){
+      var rover = new Rover({start: new Position(0, 0, 'west')});
       rover.move('f'); // move forward
       var position = rover.getPosition();
       expect(position.x).toEqual(-1);
       expect(position.y).toEqual(0);
       expect(position.direction).toEqual('west');
     });
-    it('should move backward (facing west, on x-axis)', function(){
-      var rover = new Rover(new Position(0, 0, 'west'));
+    it('backward (facing west, on x-axis)', function(){
+      var rover = new Rover({start: new Position(0, 0, 'west')});
       rover.move('b'); // move backward
       var position = rover.getPosition();
       expect(position.x).toEqual(1);
@@ -118,25 +118,23 @@ describe('Rover', function(){
 
   });
 
-  describe('driving', function(){
-    it('should handle a more complex command string', function(){
-      console.log('-------');
-      var rover = new Rover();
-      rover.move('ffrff');
-      var position = rover.getPosition();
-      expect(position.x).toEqual(2);
-      expect(position.y).toEqual(2);
-      expect(position.direction).toEqual('east');
-    });
-
-    it('should drive a loop (actually a even more complex command string)', function(){
-      console.log('-------');
+  describe('drives', function(){
+    it('a loop (frfrfrf)', function(){
       var rover = new Rover();
       rover.move('frfrfrf');
       var position = rover.getPosition();
       expect(position.x).toEqual(0);
       expect(position.y).toEqual(0);
       expect(position.direction).toEqual('west');
+    });
+
+    it('another loop (blfrfrfl) starting at 1,2 facing east', function(){
+      var rover = new Rover({start: new Position(1, 2, 'east')});
+      rover.move('blfrfrfl');
+      var position = rover.getPosition();
+      expect(position.x).toEqual(1);
+      expect(position.y).toEqual(2);
+      expect(position.direction).toEqual('east');
     });
   });
 

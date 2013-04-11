@@ -51,19 +51,25 @@ Rover.prototype.move = function(commandString) {
 // move rover forward and save new position (consider direction)
 Rover.prototype.moveForward = function() {
   var position = this.getPosition();
-  if(position.axis === 'x') position.setX(position.x+1);
-  else position.setY(position.y+1);
+  switch(position.direction) {
+    case 'north': position.addY(1); break;
+    case 'south': position.addY(-1); break;
+    case 'west': position.addX(-1); break;
+    case 'east': position.addX(1); break;
+  }
   this.addPosition(position); 
-  console.log('moving forward', position);
 }
 
 // move rover backward and save new position (consider direction)
 Rover.prototype.moveBackward = function() {
   var position = this.getPosition();
-  if(position.axis === 'x') position.setX(position.x-1);
-  else position.setY(position.y-1);
+  switch(position.direction) {
+    case 'north': position.addY(-1); break;
+    case 'south': position.addY(1); break;
+    case 'west': position.addX(1); break;
+    case 'east': position.addX(-1); break;
+  }
   this.addPosition(position); 
-  console.log('moving backward', position);
 }
 
 // turn rover left and save new position
@@ -71,7 +77,6 @@ Rover.prototype.turnLeft = function() {
   var position = this.getPosition();
   position.setDirection(helper.returnFromInfiniteArray(DIRECTIONS, position.direction, -1));
   this.addPosition(position); 
-  console.log('turning left', position);
 }
 
 // turn rover right and save new position
@@ -79,9 +84,7 @@ Rover.prototype.turnRight = function() {
   var position = this.getPosition();
   position.setDirection(helper.returnFromInfiniteArray(DIRECTIONS, position.direction, 1));
   this.addPosition(position); 
-  console.log('turning right', position);
 }
-
 
 
 module.exports = Rover;
