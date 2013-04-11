@@ -1,6 +1,9 @@
 "use strict";
 var _ = require('underscore');
 var Position = require('./Position.js');
+var helper = require('../helpers.js');
+
+var DIRECTIONS = ['north', 'east', 'south', 'west'];
 
 function Rover(options) {
   var defaults = {
@@ -27,8 +30,7 @@ Rover.prototype.addPosition = function(position) {
   return true;
 }
 
-
-// move rover
+// move rover according to commandString f|b|l|r
 Rover.prototype.move = function(commandString) {
   if(!_.isString(commandString)) throw new Error('invalid command string');
   var commands = commandString.split('');
@@ -39,6 +41,8 @@ Rover.prototype.move = function(commandString) {
     switch(commands[i]) {
       case 'f': this.moveForward(); break;
       case 'b': this.moveBackward(); break;
+      case 'l': this.turnLeft(); break;
+      case 'r': this.turnRight(); break;
     }
   }
 }
@@ -56,5 +60,21 @@ Rover.prototype.moveBackward = function() {
   position.y--;
   this.addPosition(position); 
 }
+
+// turn rover left and save new position
+Rover.prototype.turnLeft = function() {
+  var position = this.getPosition();
+  position.direction = helper.returnFromInfiniteArray(DIRECTIONS, position.direction, -1);
+  this.addPosition(position); 
+}
+
+// turn rover right and save new position
+Rover.prototype.turnRight = function() {
+  var position = this.getPosition();
+  position.direction = helper.returnFromInfiniteArray(DIRECTIONS, position.direction, 1);
+  this.addPosition(position); 
+}
+
+
 
 module.exports = Rover;
