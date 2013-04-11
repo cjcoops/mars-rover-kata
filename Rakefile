@@ -10,3 +10,10 @@ task :test do
     spec'
 end
 
+desc "run tests automatically"
+task :autotest do 
+  system './node_modules/.bin/jasmine-node \
+    --autotest \
+    --verbose \
+    spec'
+end
