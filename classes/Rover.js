@@ -1,5 +1,7 @@
 "use strict";
 
+var Position = require('./Position.js');
+
 function Rover() {
   this.pathStack = []; 
 }

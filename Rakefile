@@ -9,3 +9,4 @@ task :test do
     --verbose \
     spec'
 end
+
