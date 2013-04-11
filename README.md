@@ -20,5 +20,6 @@ mars-rover-kata
     npm install
     
 ## Usage
-    @todo
+    # Run tests
+    rake test
 
