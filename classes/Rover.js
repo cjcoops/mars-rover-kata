@@ -1,12 +1,14 @@
 "use strict";
 var _ = require('underscore');
 var Position = require('./Position.js');
+var Map = require('./Map.js');
 var helper = require('../helpers.js');
 var DIRECTIONS = require('./Directions.js');
 
 function Rover(options) {
   var defaults = {
-    start: new Position(0, 0, 'north') // default position
+    start: new Position(0, 0, 'north'), // default position
+    map: undefined
   };
 
   if(!options) options = {};
@@ -14,6 +16,15 @@ function Rover(options) {
 
   this.pathStack = [];
   this.addPosition(options.start); 
+
+  if(options.map) this.setMap(options.map);
+}
+
+// set map aka data for navigation system
+Rover.prototype.setMap = function(map) {
+  if(!map instanceof Map) throw new Error('invalid map');
+  this.map = map;
+  return true;
 }
 
 // get last Position of rover
@@ -25,6 +36,7 @@ Rover.prototype.getPosition = function(index) {
 
 // add new Position to rover path
 Rover.prototype.addPosition = function(position) {
+  if(!position instanceof Position) throw new Error('invalid position');
   this.pathStack.push(position);
   return true;
 }
