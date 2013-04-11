@@ -2,8 +2,7 @@
 var _ = require('underscore');
 var Position = require('./Position.js');
 var helper = require('../helpers.js');
-
-var DIRECTIONS = ['north', 'east', 'south', 'west'];
+var DIRECTIONS = require('./Directions.js');
 
 function Rover(options) {
   var defaults = {

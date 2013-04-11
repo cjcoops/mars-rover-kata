@@ -1,7 +1,6 @@
 "use strict";
 var _ = require('underscore');
-
-var DIRECTIONS = ['north', 'east', 'south', 'west'];
+var DIRECTIONS = require('./Directions.js');
 
 function Position(x, y, direction) {
   if(!_.isNumber(x)) throw new Error('missing x coordinate');
