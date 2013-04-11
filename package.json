@@ -8,7 +8,7 @@
   },
 
   "devDependencies": {
-    "jasmin-node": "1.5.0"
+    "jasmine-node": "1.5.0"
   }
 
 }
