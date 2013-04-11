@@ -14,9 +14,11 @@ function Rover(options) {
   this.pathStack.push(options.start); 
 }
 
-Rover.prototype.getPosition = function() {
+// get last Position of rover
+Rover.prototype.getPosition = function(index) {
+  if(!index) index = 0;
   if(this.pathStack.length === 0) return false;
-  return this.pathStack[this.pathStack.length-1];
+  return this.pathStack[this.pathStack.length - index - 1];
 }
 
 Rover.prototype.move = function() {
