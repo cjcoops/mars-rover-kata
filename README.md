@@ -30,3 +30,34 @@ rake test      # run tests
 
 node api.js command
 ```
+
+## Example Output
+```
+node api.js \
+  --map-width 100 \
+  --map-height 100 \
+  --rover-x 1 \
+  --rover-y 2 \
+  --rover-direction south \
+  --obstacles "1,2; 3,4; 5,6" \
+  ffrfflfflbb'
+  
+Map size:     100x100
+Obstacles:    [ { x: 1, y: 2 }, { x: 3, y: 4 }, { x: 5, y: 6 } ]
+Command:      ffrfflfflbb
+Rover start:  { x: 1, y: 2, direction: 'south' }
+Rover end:    { x: -3, y: -2, direction: 'east' }
+Rover Path:
+[ { x: 1, y: 2, direction: 'south' },
+  { x: 1, y: 1, direction: 'south' },
+  { x: 1, y: 0, direction: 'west' },
+  { x: 1, y: 0, direction: 'west' },
+  { x: 0, y: 0, direction: 'west' },
+  { x: -1, y: 0, direction: 'south' },
+  { x: -1, y: 0, direction: 'south' },
+  { x: -1, y: -1, direction: 'south' },
+  { x: -1, y: -2, direction: 'east' },
+  { x: -1, y: -2, direction: 'east' },
+  { x: -2, y: -2, direction: 'east' },
+  { x: -3, y: -2, direction: 'east' } ]
+``
