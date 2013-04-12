@@ -13,14 +13,11 @@ module.exports = {
     }
 
     // calculate absolute index to return
-    var absoluteReturnIndex = currentIndex + returnIndex;
+    var absoluteReturnIndex = returnIndex + currentIndex;
+    absoluteReturnIndex = absoluteReturnIndex % array.length;
 
-    // make sure absoluteReturnIndex is within boundaries of array
-    if(absoluteReturnIndex < 0) {
-      absoluteReturnIndex = array.length-1;
-    } else if(absoluteReturnIndex > array.length-1) {
-      absoluteReturnIndex = 0;
-    }
+    if(absoluteReturnIndex < 0)
+      absoluteReturnIndex = array.length + absoluteReturnIndex;
 
     // finally return value for returnIndex
     return array[absoluteReturnIndex];

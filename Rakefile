@@ -15,7 +15,7 @@ task :autotest do
   system './node_modules/.bin/jasmine-node \
     --autotest \
     --verbose \
-    spec classes' # adding classes dir to watched directories
+    spec classes ./helpers.js' # adding classes dir to watched directories
 end
 
 desc "play the rover game"
