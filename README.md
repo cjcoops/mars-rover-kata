@@ -20,6 +20,11 @@ mars-rover-kata
     npm install
     
 ## Usage
-    rake test
-    rake gui
-
+```
+rake api       # run api with example input
+rake api_help  # see api help
+rake autotest  # run tests automatically
+rake default   # see usage
+rake gui       # play the rover game
+rake test      # run tests
+```
