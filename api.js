@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var Position = require('./classes/Position.js');
 var Rover = require('./classes/Rover.js');
@@ -30,7 +30,7 @@ var obstacles = program['obstacles'] || [];
 
 
 // validate map size
-if(!mapHeight > 0 && !mapWidth > 0) mapHeight = 100;
+if (!mapHeight > 0 && !mapWidth > 0) mapHeight = 100;
 mapHeight = mapHeight ? mapHeight : mapWidth;
 mapWidth = mapWidth ? mapWidth : mapHeight;
 
@@ -38,11 +38,11 @@ mapWidth = mapWidth ? mapWidth : mapHeight;
 var map = new Map(mapWidth, mapHeight);
 
 // add obstacles to map
-if(obstacles.length > 0) {
-  for(var i=0; i < obstacles.length; i++) {
+if (obstacles.length > 0) {
+  for (var i = 0; i < obstacles.length; i++) {
     var obstacle = obstacles[i].split(',');
-    if(obstacle.length === 2)
-      map.addObstacle(new Obstacle(+obstacle[0], +obstacle[1])); 
+    if (obstacle.length === 2)
+      map.addObstacle(new Obstacle(+obstacle[0], +obstacle[1]));
   }
 }
 

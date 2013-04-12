@@ -1,5 +1,5 @@
-"use strict";
-var keypress = require('keypress'); 
+'use strict';
+var keypress = require('keypress');
 var util = require('util');
 var clc = require('cli-color');
 
@@ -27,40 +27,40 @@ var animate = function() {
   process.stdout.write(clc.moveTo(0, 0));
 
   var paths = {};
-  for(var i=0; i < rover.pathStack.length; i++) {
+  for (var i = 0; i < rover.pathStack.length; i++) {
     var position = rover.pathStack[i];
     paths[position.x + ',' + position.y] = position;
   }
 
   var obstacles = {};
-  for(var i=0; i < map.obstacles.length; i++) {
+  for (var i = 0; i < map.obstacles.length; i++) {
     var position = map.obstacles[i];
     obstacles[position.x + ',' + position.y] = position;
   }
 
-  for(var y=map.height+1; y >= -map.height-1; y--) {
-    for(var x=-map.width-1; x <= map.width+1; x++) {
+  for (var y = map.height + 1; y >= -map.height - 1; y--) {
+    for (var x = -map.width - 1; x <= map.width + 1; x++) {
 
-      if(x === -map.width-1 || x === map.width+1 
-        || y === -map.height-1 || y === map.height+1) {
+      if (x === -map.width - 1 || x === map.width + 1
+        || y === -map.height - 1 || y === map.height + 1) {
         util.print('░'); // draw border
-      } 
-      else if(obstacles.hasOwnProperty(x+','+y)) {
+      }
+      else if (obstacles.hasOwnProperty(x + ',' + y)) {
         // draw obstacles
-        util.print('▓'); 
-      } 
-      else if(paths.hasOwnProperty(x+','+y)) {
+        util.print('▓');
+      }
+      else if (paths.hasOwnProperty(x + ',' + y)) {
         // draw rover path
-        var position = paths[x+','+y];
-        switch(position.direction) {
+        var position = paths[x + ',' + y];
+        switch (position.direction) {
           case 'north': util.print('↑'); break;
           case 'south': util.print('↓'); break;
           case 'east': util.print('→'); break;
           case 'west': util.print('←'); break;
         }
-      } 
+      }
       else {
-        util.print(' ');    
+        util.print(' ');
       }
     }
     console.log(/* new line */);
@@ -68,20 +68,20 @@ var animate = function() {
 
   console.log(rover.getPosition());
   console.log('f=forward, b=backward, r=right, l=left, n=new, q=quit');
-}
+};
 
 animate(); // initial frame
 
 keypress(process.stdin);
-process.stdin.on('keypress', function (ch, key) {
+process.stdin.on('keypress', function(ch, key) {
   // new rover with new frame
-  if(key.sequence == 'n')
+  if (key.sequence == 'n')
     rover = new Rover({start: new Position(0, 0, 'north'), map: map});
 
   rover.move(key.sequence); // pass key to rover command string
   animate(); // draw frame
 
-  if((key && key.ctrl && key.name == 'c') || key.sequence == 'q')
+  if ((key && key.ctrl && key.name == 'c') || key.sequence == 'q')
     process.stdin.pause(); // exit
 });
 

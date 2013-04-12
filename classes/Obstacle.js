@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var _ = require('underscore');
 
 function Obstacle(x, y) {
@@ -10,13 +10,13 @@ function Obstacle(x, y) {
 }
 
 Obstacle.prototype.setX = function(x) {
-  if(!_.isNumber(x)) throw new Error('invalid x coordinate');
+  if (!_.isNumber(x)) throw new Error('invalid x coordinate');
   this.x = x;
-}
+};
 
 Obstacle.prototype.setY = function(y) {
-  if(!_.isNumber(y)) throw new Error('invalid y coordinate');
+  if (!_.isNumber(y)) throw new Error('invalid y coordinate');
   this.y = y;
-}
+};
 
 module.exports = Obstacle;
