@@ -1,3 +1,5 @@
+"use strict";
+
 var Position = require('./classes/Position.js');
 var Rover = require('./classes/Rover.js');
 var Map = require('./classes/Map.js');

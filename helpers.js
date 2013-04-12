@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
 
   // make an array infinite virtually, so it has no start or end
