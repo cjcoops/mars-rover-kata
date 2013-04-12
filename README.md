@@ -41,7 +41,7 @@ node api.js \
   --rover-direction south \
   --obstacles "1,2; 3,4; 5,6" \
   ffrfflfflbb'
-  
+
 Map size:     100x100
 Obstacles:    [ { x: 1, y: 2 }, { x: 3, y: 4 }, { x: 5, y: 6 } ]
 Command:      ffrfflfflbb
@@ -60,4 +60,4 @@ Rover Path:
   { x: -1, y: -2, direction: 'east' },
   { x: -2, y: -2, direction: 'east' },
   { x: -3, y: -2, direction: 'east' } ]
-``
+``` 
