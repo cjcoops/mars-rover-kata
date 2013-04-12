@@ -1,6 +1,7 @@
 "use strict";
 var Position = require('../classes/Position.js');
 
+
 describe('Position', function(){
 
   it('should handle positive values', function(){

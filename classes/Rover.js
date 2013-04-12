@@ -1,9 +1,11 @@
 "use strict";
 var _ = require('underscore');
+var helper = require('../helpers.js');
+
 var Position = require('./Position.js');
 var Map = require('./Map.js');
-var helper = require('../helpers.js');
 var DIRECTIONS = require('./Directions.js');
+
 
 function Rover(options) {
   var defaults = {

@@ -1,6 +1,8 @@
 "use strict";
 var _ = require('underscore');
+
 var DIRECTIONS = require('./Directions.js');
+
 
 function Position(x, y, direction) {
   this.x = undefined;

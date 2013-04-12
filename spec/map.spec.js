@@ -1,7 +1,9 @@
 "use strict";
+var _ = require('underscore');
+
 var Map = require('../classes/Map.js');
 var Obstacle = require('../classes/Obstacle.js');
-var _ = require('underscore');
+
 
 describe('Map', function(){
 

@@ -1,6 +1,7 @@
 "use strict";
 var Obstacle = require('../classes/Obstacle.js');
 
+
 describe('Obstacle', function(){
 
   it('should have some coordinates', function(){

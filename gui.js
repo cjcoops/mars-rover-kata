@@ -1,5 +1,4 @@
 "use strict";
-
 var keypress = require('keypress'); 
 var util = require('util');
 var clc = require('cli-color');

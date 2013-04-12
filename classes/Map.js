@@ -1,6 +1,8 @@
 "use strict";
-var Obstacle = require('./Obstacle.js');
 var _ = require('underscore');
+
+var Obstacle = require('./Obstacle.js');
+
 
 function Map(width, height) {
   this.width = undefined;

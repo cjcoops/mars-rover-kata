@@ -4,6 +4,7 @@ var Rover = require('../classes/Rover.js');
 var Obstacle = require('../classes/Obstacle.js');
 var Position = require('../classes/Position.js');
 
+
 describe('Rover on Map', function(){
 
   describe('moves FORWARD from one edge of the map to the other', function(){
