@@ -1,11 +1,13 @@
 {
   "name": "mars-rover-kata",
   "description": "Mars Rover Kata with Node.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
 
   "dependencies": {
-    "underscore":"1.4.4"
+    "underscore":"1.4.4",
+    "cli-color":"0.2.2",
+    "keypress":"0.1.0"
   },
 
   "devDependencies": {
