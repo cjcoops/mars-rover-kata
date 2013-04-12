@@ -63,82 +63,84 @@ Rover.prototype.move = function(commandString) {
   return true;
 }
 
+
 // move rover forward and save new position 
 // consider direction, map boundaries and map obstacles
 Rover.prototype.moveForward = function() {
-  var position = this.getPosition().clone();
-  switch(position.direction) {
-    case 'north': position.addY(1); break;
-    case 'south': position.addY(-1); break;
-    case 'west': position.addX(-1); break;
-    case 'east': position.addX(1); break;
-  }
-
-  // if map is present ...
-  if(this.map) {    
-    this._mapWrapper(position, this.map); // moves within map boundaries only
-    if(this._mapCollideWithObstacle(position, this.map)) return false; // obstacle collision?
-  }
-  this.addPosition(position); 
-  return true;
+  return this._move(1);
 }
 
 // move rover backward and save new position
 // consider direction, map boundaries and map obstacles
 Rover.prototype.moveBackward = function() {
-  var position = this.getPosition().clone();
-  switch(position.direction) {
-    case 'north': position.addY(-1); break;
-    case 'south': position.addY(1); break;
-    case 'west': position.addX(1); break;
-    case 'east': position.addX(-1); break;
-  }
-
-  // if map is present ...
-  if(this.map) {
-    this._mapWrapper(position, this.map); // moves within map boundaries only
-    if(this._mapCollideWithObstacle(position, this.map)) return false; // obstacle collision?
-  }
-  this.addPosition(position); 
-  return true;
-
+  return this._move(-1);
 }
 
 // turn rover left and save new position
 Rover.prototype.turnLeft = function() {
-  var position = this.getPosition();
-  position.setDirection(helper.returnFromInfiniteArray(DIRECTIONS, position.direction, -1));
-  this.addPosition(position); 
+  this._turn(-1);
 }
 
 // turn rover right and save new position
 Rover.prototype.turnRight = function() {
+  this._turn(1);
+}
+
+
+
+Rover.prototype._move = function(direction) {
+  // direction =  1 = forward
+  // direction = -1 = backward
+
+  var position = this.getPosition().clone();
+  switch(position.direction) {
+    case 'north': position.addY(1 * direction); break;
+    case 'south': position.addY(-1 * direction); break;
+    case 'west': position.addX(-1 * direction); break;
+    case 'east': position.addX(1 * direction); break;
+  }
+
+  // if map is present ...
+  if(this.map) {    
+    // moves within map boundaries only
+
+    // make sure rover stays within boundaries of map
+    var _mapWrapper = function(position, map) {
+      if(position.x > map.width) {
+        position.setX(-map.width);
+      } else if(position.x < -map.width) {
+        position.setX(map.width);
+      } else if(position.y > map.height) {
+        position.setY(-map.height);
+      } else if(position.y < -map.height) {
+        position.setY(map.height);
+      }
+    }
+    _mapWrapper(position, this.map); 
+
+    var _mapCollideWithObstacle = function(position, map) {
+      for(var i=0; i < map.obstacles.length; i++) {
+        var obstacle = map.obstacles[i];
+        if(position.x == obstacle.x && position.y == obstacle.y) {
+          return true;
+        }
+      }
+      return false;
+    }
+    if(_mapCollideWithObstacle(position, this.map)) return false; // obstacle collision?
+  }
+  this.addPosition(position); 
+  return true;
+}
+
+
+Rover.prototype._turn = function(direction) {
+  // direction =  1 = right
+  // direction = -1 = left
   var position = this.getPosition();
-  position.setDirection(helper.returnFromInfiniteArray(DIRECTIONS, position.direction, 1));
+  position.setDirection(helper.returnFromInfiniteArray(DIRECTIONS, position.direction, 1 * direction));
   this.addPosition(position); 
 }
 
-// make sure rover stays within boundaries of map
-Rover.prototype._mapWrapper = function(position, map) {
-  if(position.x > map.width) {
-    position.setX(-map.width);
-  } else if(position.x < -map.width) {
-    position.setX(map.width);
-  } else if(position.y > map.height) {
-    position.setY(-map.height);
-  } else if(position.y < -map.height) {
-    position.setY(map.height);
-  }
-}
-
-Rover.prototype._mapCollideWithObstacle = function(position, map) {
-  for(var i=0; i < map.obstacles.length; i++) {
-    var obstacle = map.obstacles[i];
-    if(position.x == obstacle.x && position.y == obstacle.y) {
-      return true;
-    }
-  }
-  return false;
-}
 
 module.exports = Rover;
