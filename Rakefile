@@ -40,3 +40,9 @@ task :api_help do
   system 'node api.js \
   --help'
 end
+
+
+desc "generate docs"
+task :doc do 
+  system 'docco classes/*.js'
+end

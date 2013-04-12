@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Rover.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Directions.html">
+                Directions.js
+              </a>
+            
+              
+              <a class="source" href="Map.html">
+                Map.js
+              </a>
+            
+              
+              <a class="source" href="Obstacle.html">
+                Obstacle.js
+              </a>
+            
+              
+              <a class="source" href="Position.html">
+                Position.js
+              </a>
+            
+              
+              <a class="source" href="Rover.html">
+                Rover.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>Rover.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="string">'use strict'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>include some common libs</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> _ = require(<span class="string">'underscore'</span>);
+<span class="keyword">var</span> helper = require(<span class="string">'../helpers.js'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>include required classes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> Position = require(<span class="string">'./Position.js'</span>);
+<span class="keyword">var</span> Map = require(<span class="string">'./Map.js'</span>);
+<span class="keyword">var</span> DIRECTIONS = require(<span class="string">'./Directions.js'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2>Rover class definition</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">Rover</span><span class="params">(options)</span> {</span>
+  <span class="keyword">var</span> defaults = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>assign default starting position<br>@todo within map boundaries?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    start: <span class="keyword">new</span> Position(<span class="number">0</span>, <span class="number">0</span>, <span class="string">'north'</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>assign map instance undefined</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    map: <span class="literal">undefined</span> 
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>overwrite defaults with values given from options object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span> (!options) options = {};
+  options = _.defaults(options, defaults);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>init pathStack and add startint position as first path item</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.pathStack = [];
+  <span class="keyword">this</span>.addPosition(options.start);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>if there is a map available, we should use it
+for boundaries and obstacles checks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span> (options.map) <span class="keyword">this</span>.setMap(options.map);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>set map aka data for navigation system</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype.setMap = <span class="keyword">function</span>(map) {
+  <span class="keyword">if</span> (!map <span class="keyword">instanceof</span> Map) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'invalid map'</span>);
+  <span class="keyword">this</span>.map = map;
+  <span class="keyword">return</span> <span class="literal">true</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>get last Position of rover</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype.getPosition = <span class="keyword">function</span>(index) {
+  <span class="keyword">if</span> (!index) index = <span class="number">0</span>;
+  <span class="keyword">if</span> (<span class="keyword">this</span>.pathStack.length === <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;
+  <span class="keyword">return</span> <span class="keyword">this</span>.pathStack[<span class="keyword">this</span>.pathStack.length - index - <span class="number">1</span>];
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>add new Position to rover path</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype.addPosition = <span class="keyword">function</span>(position) {
+  <span class="keyword">if</span> (!position <span class="keyword">instanceof</span> Position) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'invalid position'</span>);
+  <span class="keyword">this</span>.pathStack.push(position);
+  <span class="keyword">return</span> <span class="literal">true</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>move rover according to commandString `f|b|l|r</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype.move = <span class="keyword">function</span>(commandString) {
+  <span class="keyword">if</span> (!_.isString(commandString)) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'invalid command string'</span>);
+  <span class="keyword">var</span> commands = commandString.split(<span class="string">''</span>);
+  <span class="keyword">if</span> (commands.length === <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// everything is fine</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>iterate over every single command</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; commands.length; i++) {
+    <span class="keyword">switch</span> (commands[i]) {
+      <span class="keyword">case</span> <span class="string">'f'</span>:
+        <span class="keyword">if</span> (!<span class="keyword">this</span>.moveForward()) <span class="keyword">return</span> <span class="literal">false</span>;
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'b'</span>:
+        <span class="keyword">if</span> (!<span class="keyword">this</span>.moveBackward()) <span class="keyword">return</span> <span class="literal">false</span>;
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'l'</span>: <span class="keyword">this</span>.turnLeft(); <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'r'</span>: <span class="keyword">this</span>.turnRight(); <span class="keyword">break</span>;
+    }
+  }
+  <span class="keyword">return</span> <span class="literal">true</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>move rover forward and save new position
+consider direction, map boundaries and map obstacles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype.moveForward = <span class="keyword">function</span>() {
+  <span class="keyword">return</span> <span class="keyword">this</span>._move(<span class="number">1</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>move rover backward and save new position
+consider direction, map boundaries and map obstacles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype.moveBackward = <span class="keyword">function</span>() {
+  <span class="keyword">return</span> <span class="keyword">this</span>._move(-<span class="number">1</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>turn rover left and save new position</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype.turnLeft = <span class="keyword">function</span>() {
+  <span class="keyword">this</span>._turn(-<span class="number">1</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>turn rover right and save new position</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype.turnRight = <span class="keyword">function</span>() {
+  <span class="keyword">this</span>._turn(<span class="number">1</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>do the actual work when moving the rover<br><code>direction =  1 = forward</code><br><code>direction = -1 = backward</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype._move = <span class="keyword">function</span>(direction) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>get last Position and clone a new Position</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> position = <span class="keyword">this</span>.getPosition().clone();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>move the rover according to its direction it is facing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">switch</span> (position.direction) {
+    <span class="keyword">case</span> <span class="string">'north'</span>: position.addY(<span class="number">1</span> * direction); <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">'south'</span>: position.addY(-<span class="number">1</span> * direction); <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">'west'</span>: position.addX(-<span class="number">1</span> * direction); <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">'east'</span>: position.addX(<span class="number">1</span> * direction); <span class="keyword">break</span>;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>if map is present ...</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span> (<span class="keyword">this</span>.map) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>moves within map boundaries only<br>make sure rover stays within boundaries of map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> _mapWrapper = <span class="keyword">function</span>(position, map) {
+      <span class="keyword">if</span> (position.x &gt; map.width) {
+        position.setX(-map.width);
+      } <span class="keyword">else</span> <span class="keyword">if</span> (position.x &lt; -map.width) {
+        position.setX(map.width);
+      } <span class="keyword">else</span> <span class="keyword">if</span> (position.y &gt; map.height) {
+        position.setY(-map.height);
+      } <span class="keyword">else</span> <span class="keyword">if</span> (position.y &lt; -map.height) {
+        position.setY(map.height);
+      }
+    };
+    _mapWrapper(position, <span class="keyword">this</span>.map);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>internal method to detect collisions with obstacles </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> _mapCollideWithObstacle = <span class="keyword">function</span>(position, map) {
+      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; map.obstacles.length; i++) {
+        <span class="keyword">var</span> obstacle = map.obstacles[i];
+        <span class="keyword">if</span> (position.x == obstacle.x &amp;&amp; position.y == obstacle.y) {
+          <span class="keyword">return</span> <span class="literal">true</span>;
+        }
+      }
+      <span class="keyword">return</span> <span class="literal">false</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>obstacle collision?
+@todo report obstacle collision? currently it returns false. 
+maybe one could implement an EventListener</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (_mapCollideWithObstacle(position, <span class="keyword">this</span>.map)) <span class="keyword">return</span> <span class="literal">false</span>; 
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>okay, finally add the new (cloned) Position to the pathStack</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.addPosition(position);
+  <span class="keyword">return</span> <span class="literal">true</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>do the actual work when turning the rover<br><code>direction =  1 = right</code><br><code>direction = -1 = left</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Rover.prototype._turn = <span class="keyword">function</span>(direction) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>get last Position and clone a new Position</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> position = <span class="keyword">this</span>.getPosition();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>update direction, making DIRECTIONS array virtual infinite. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  position.setDirection(helper.returnFromInfiniteArray(DIRECTIONS, position.direction, <span class="number">1</span> * direction));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>okay, finally add the new (cloned) Position to the pathStack</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.addPosition(position);
+  <span class="keyword">return</span> <span class="literal">true</span>;
+};
+
+
+module.exports = Rover;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

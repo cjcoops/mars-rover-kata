@@ -1,24 +1,36 @@
 'use strict';
+
+// include some common libs
 var _ = require('underscore');
 var helper = require('../helpers.js');
 
+// include required classes
 var Position = require('./Position.js');
 var Map = require('./Map.js');
 var DIRECTIONS = require('./Directions.js');
 
-
+// ## Rover class definition
 function Rover(options) {
   var defaults = {
-    start: new Position(0, 0, 'north'), // default position // @todo within map boundaries?
-    map: undefined // map with boundaries and obstacles
+
+    // assign default starting position  
+    // @todo within map boundaries?
+    start: new Position(0, 0, 'north'), 
+
+    // assign map instance undefined
+    map: undefined 
   };
 
+  // overwrite defaults with values given from options object
   if (!options) options = {};
   options = _.defaults(options, defaults);
 
+  // init pathStack and add startint position as first path item
   this.pathStack = [];
   this.addPosition(options.start);
 
+  // if there is a map available, we should use it
+  // for boundaries and obstacles checks
   if (options.map) this.setMap(options.map);
 }
 
@@ -43,7 +55,7 @@ Rover.prototype.addPosition = function(position) {
   return true;
 };
 
-// move rover according to commandString f|b|l|r
+// move rover according to commandString `f|b|l|r
 Rover.prototype.move = function(commandString) {
   if (!_.isString(commandString)) throw new Error('invalid command string');
   var commands = commandString.split('');
@@ -89,12 +101,15 @@ Rover.prototype.turnRight = function() {
 };
 
 
-
+// do the actual work when moving the rover  
+// `direction =  1 = forward`  
+// `direction = -1 = backward`
 Rover.prototype._move = function(direction) {
-  // direction =  1 = forward
-  // direction = -1 = backward
 
+  // get last Position and clone a new Position
   var position = this.getPosition().clone();
+
+  // move the rover according to its direction it is facing
   switch (position.direction) {
     case 'north': position.addY(1 * direction); break;
     case 'south': position.addY(-1 * direction); break;
@@ -104,8 +119,7 @@ Rover.prototype._move = function(direction) {
 
   // if map is present ...
   if (this.map) {
-    // moves within map boundaries only
-
+    // moves within map boundaries only  
     // make sure rover stays within boundaries of map
     var _mapWrapper = function(position, map) {
       if (position.x > map.width) {
@@ -120,6 +134,7 @@ Rover.prototype._move = function(direction) {
     };
     _mapWrapper(position, this.map);
 
+    // internal method to detect collisions with obstacles 
     var _mapCollideWithObstacle = function(position, map) {
       for (var i = 0; i < map.obstacles.length; i++) {
         var obstacle = map.obstacles[i];
@@ -129,19 +144,31 @@ Rover.prototype._move = function(direction) {
       }
       return false;
     };
-    if (_mapCollideWithObstacle(position, this.map)) return false; // obstacle collision?
+    // obstacle collision?
+    // @todo report obstacle collision? currently it returns false. 
+    // maybe one could implement an EventListener
+    if (_mapCollideWithObstacle(position, this.map)) return false; 
   }
+
+  // okay, finally add the new (cloned) Position to the pathStack
   this.addPosition(position);
   return true;
 };
 
-
+// do the actual work when turning the rover  
+// `direction =  1 = right`  
+// `direction = -1 = left`
 Rover.prototype._turn = function(direction) {
-  // direction =  1 = right
-  // direction = -1 = left
+
+  // get last Position and clone a new Position
   var position = this.getPosition();
+
+  // update direction, making DIRECTIONS array virtual infinite. 
   position.setDirection(helper.returnFromInfiniteArray(DIRECTIONS, position.direction, 1 * direction));
+
+  // okay, finally add the new (cloned) Position to the pathStack
   this.addPosition(position);
+  return true;
 };
 
 

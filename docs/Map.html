@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Map.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Directions.html">
+                Directions.js
+              </a>
+            
+              
+              <a class="source" href="Map.html">
+                Map.js
+              </a>
+            
+              
+              <a class="source" href="Obstacle.html">
+                Obstacle.js
+              </a>
+            
+              
+              <a class="source" href="Position.html">
+                Position.js
+              </a>
+            
+              
+              <a class="source" href="Rover.html">
+                Rover.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>Map.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="string">'use strict'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>include some common libs</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> _ = require(<span class="string">'underscore'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>include required classes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> Obstacle = require(<span class="string">'./Obstacle.js'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2>Map class definition</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">Map</span><span class="params">(width, height)</span> {</span>
+  <span class="keyword">this</span>.width = <span class="literal">undefined</span>;
+  <span class="keyword">this</span>.height = <span class="literal">undefined</span>;
+  <span class="keyword">this</span>.obstacles = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>it spans a coordinate system into positive and negative direction</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.setWidth(width);
+  <span class="keyword">this</span>.setHeight(height);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>setter for width</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Map.prototype.setWidth = <span class="keyword">function</span>(width) {
+  <span class="keyword">if</span> (!_.isNumber(width)) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'invalid width'</span>);
+  <span class="keyword">this</span>.width = width;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>setter for height</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Map.prototype.setHeight = <span class="keyword">function</span>(height) {
+  <span class="keyword">if</span> (!_.isNumber(height)) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'invalid height'</span>);
+  <span class="keyword">this</span>.height = height;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>add obstacle and perform some checks
+like if the obstacle coordinates are within the
+map boundaries</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Map.prototype.addObstacle = <span class="keyword">function</span>(obstacle) {
+  <span class="keyword">if</span> (!<span class="keyword">this</span>.width || !<span class="keyword">this</span>.height) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'init map with width and height first'</span>);
+  <span class="keyword">if</span> (!obstacle <span class="keyword">instanceof</span> Obstacle) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'invalid obstacle'</span>);
+
+  <span class="keyword">if</span> (obstacle.x &gt; <span class="keyword">this</span>.width || obstacle.x &lt; -<span class="keyword">this</span>.width)
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'x coordinate is not within map boundaries'</span>);
+
+  <span class="keyword">if</span> (obstacle.y &gt; <span class="keyword">this</span>.height || obstacle.y &lt; -<span class="keyword">this</span>.height)
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'y coordinate is not within map boundaries'</span>);
+
+  <span class="keyword">this</span>.obstacles.push(obstacle);
+};
+
+
+module.exports = Map;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
