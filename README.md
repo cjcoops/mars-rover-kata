@@ -22,4 +22,5 @@ mars-rover-kata
 ## Usage
     # Run tests
     rake test
+    rake gui
 
