@@ -20,7 +20,6 @@ mars-rover-kata
     npm install
     
 ## Usage
-    # Run tests
     rake test
     rake gui
 
