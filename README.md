@@ -1,8 +1,7 @@
 mars-rover-kata
 ===============
 
-[![Build Status](https://travis-ci.org/mattes/mars-rover-kata.png)](https://travis-ci.org/mattes/mars-rover-kata)
-
+[![Build Status](https://travis-ci.org/mattes/mars-rover-kata.png?branch=master)](https://travis-ci.org/mattes/mars-rover-kata)
 
 [Mars Rover Kata](http://craftsmanship.sv.cmu.edu/katas/mars-rover-kata) with [Node.js](http://nodejs.org)  
 
