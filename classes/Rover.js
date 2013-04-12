@@ -87,7 +87,6 @@ Rover.prototype.moveForward = function() {
 // consider direction, map boundaries and map obstacles
 Rover.prototype.moveBackward = function() {
   var position = this.getPosition().clone();
-  position = new Position(position.x, position.y, position.direction);
   switch(position.direction) {
     case 'north': position.addY(-1); break;
     case 'south': position.addY(1); break;

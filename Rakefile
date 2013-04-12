@@ -17,3 +17,8 @@ task :autotest do
     --verbose \
     spec classes' # adding classes dir to watched directories
 end
+
+desc "play the rover game"
+task :gui do 
+  system 'node gui.js'
+end
